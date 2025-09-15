@@ -1,6 +1,6 @@
 package user
 
-import "mrpbackend/model/employee"
+import "mjsubackend/model/employee"
 
 type TokenUser struct {
 	ID         uint              `json:"id"`

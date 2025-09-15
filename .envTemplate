@@ -1,8 +1,8 @@
 JWT_SECRET_KEY=aFhQ534iiG
-DATABASE_URL=host=localhost user=postgres password=P@ssw0rdDeli123! dbname=deli_mrp_development port=5432 sslmode=disable TimeZone=Asia/Shanghai
-DATABASE_URL_STAGING=host=localhost user=postgres password=P@ssw0rdDeli123! dbname=deli_mrp_development port=5432 sslmode=disable TimeZone=Asia/Shanghai
+DATABASE_URL=host=localhost user=postgres password=P@ssw0rdDeli123! dbname=deli_mjsu_development port=5432 sslmode=disable TimeZone=Asia/Shanghai
+DATABASE_URL_STAGING=host=localhost user=postgres password=P@ssw0rdDeli123! dbname=deli_mjsu_development port=5432 sslmode=disable TimeZone=Asia/Shanghai
 BASE_DATABASE_URL_STAGING=host=localhost user=postgres password=P@ssw0rdDeli123! dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Shanghai
 BASE_JOB_URL=http://localhost:8000
-DATABASE_NAME=deli_mrp_development
+DATABASE_NAME=deli_mjsu_development
 USERNAME_BASIC=emon
 PASSWORD_BASIC=3m0n73rb4n9

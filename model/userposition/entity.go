@@ -1,8 +1,8 @@
 package userposition
 
 import (
-	"mrpbackend/model/employee"
-	"mrpbackend/model/master/position"
+	"mjsubackend/model/employee"
+	"mjsubackend/model/master/position"
 
 	"gorm.io/gorm"
 )

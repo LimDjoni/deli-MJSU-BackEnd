@@ -1,9 +1,9 @@
 package routing
 
 import (
-	"mrpbackend/handler"
-	"mrpbackend/helper"
-	"mrpbackend/model/user"
+	"mjsubackend/handler"
+	"mjsubackend/helper"
+	"mjsubackend/model/user"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"

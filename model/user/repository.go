@@ -2,8 +2,8 @@ package user
 
 import (
 	"errors"
-	"mrpbackend/helper"
-	"mrpbackend/model/master/userrole"
+	"mjsubackend/helper"
+	"mjsubackend/model/master/userrole"
 	"strings"
 
 	"gorm.io/gorm"

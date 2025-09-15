@@ -4,24 +4,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"mrpbackend/model/master/brand"
-	"mrpbackend/model/master/department"
-	"mrpbackend/model/master/departmentform"
-	"mrpbackend/model/master/doh"
-	"mrpbackend/model/master/form"
-	"mrpbackend/model/master/heavyequipment"
-	"mrpbackend/model/master/history"
-	"mrpbackend/model/master/jabatan"
-	"mrpbackend/model/master/kartukeluarga"
-	"mrpbackend/model/master/ktp"
-	"mrpbackend/model/master/mcu"
-	"mrpbackend/model/master/pendidikan"
-	"mrpbackend/model/master/position"
-	"mrpbackend/model/master/role"
-	"mrpbackend/model/master/roleform"
-	"mrpbackend/model/master/series"
-	"mrpbackend/model/master/sertifikat"
-	"mrpbackend/model/master/userrole"
+	"mjsubackend/model/master/department"
+	"mjsubackend/model/master/departmentform"
+	"mjsubackend/model/master/doh"
+	"mjsubackend/model/master/form"
+	"mjsubackend/model/master/history"
+	"mjsubackend/model/master/jabatan"
+	"mjsubackend/model/master/kartukeluarga"
+	"mjsubackend/model/master/ktp"
+	"mjsubackend/model/master/mcu"
+	"mjsubackend/model/master/pendidikan"
+	"mjsubackend/model/master/position"
+	"mjsubackend/model/master/role"
+	"mjsubackend/model/master/roleform"
+	"mjsubackend/model/master/sertifikat"
+	"mjsubackend/model/master/userrole"
 	"strings"
 	"time"
 
@@ -30,9 +27,6 @@ import (
 
 type Repository interface {
 	CreateUserRole(userRoleInput RegisterUserRoleInput) (userrole.UserRole, error)
-	CreateBrand(brandInput RegisterBrandInput) (brand.Brand, error)
-	CreateHeavyEquipment(heavyEquipmentInput RegisterHeavyEquipmentInput) (heavyequipment.HeavyEquipment, error)
-	CreateSeries(seriesInput RegisterSeriesInput) (series.Series, error)
 	CreateKartuKeluarga(kartukeluargaInput RegisterKartuKeluargaInput) (kartukeluarga.KartuKeluarga, error)
 	CreateKTP(ktpInput RegisterKTPInput) (ktp.KTP, error)
 	CreatePendidikan(ktpInput RegisterPendidikanInput) (pendidikan.Pendidikan, error)
@@ -43,14 +37,6 @@ type Repository interface {
 	CreateHistory(historyInput RegisterHistoryInput) (history.History, error)
 	FindUserRole() ([]userrole.UserRole, error)
 	FindUserRoleById(id uint) (userrole.UserRole, error)
-	FindBrand() ([]brand.Brand, error)
-	FindBrandById(id uint) (brand.Brand, error)
-	FindHeavyEquipment() ([]heavyequipment.HeavyEquipment, error)
-	FindHeavyEquipmentById(id uint) (heavyequipment.HeavyEquipment, error)
-	FindHeavyEquipmentByBrandID(brandId uint) ([]heavyequipment.HeavyEquipment, error)
-	FindSeries() ([]series.Series, error)
-	FindSeriesById(id uint) (series.Series, error)
-	FindSeriesByBrandAndEquipmentdID(brandId uint, heavyequipmentId uint) ([]series.Series, error)
 	FindDepartment() ([]department.Department, error)
 	FindRole() ([]role.Role, error)
 	FindPosition() ([]position.Position, error)
@@ -100,49 +86,6 @@ func (r *repository) CreateUserRole(userRoleInput RegisterUserRoleInput) (userro
 	}
 
 	return newUserRole, nil
-}
-
-func (r *repository) CreateBrand(brandInput RegisterBrandInput) (brand.Brand, error) {
-	var newBrand brand.Brand
-
-	newBrand.BrandName = brandInput.BrandName
-
-	err := r.db.Create(&newBrand).Error
-	if err != nil {
-		return newBrand, err
-	}
-
-	return newBrand, nil
-}
-
-func (r *repository) CreateHeavyEquipment(heavyEquipmentInput RegisterHeavyEquipmentInput) (heavyequipment.HeavyEquipment, error) {
-	var newHeavyEquipment heavyequipment.HeavyEquipment
-
-	newHeavyEquipment.BrandId = heavyEquipmentInput.BrandId
-	newHeavyEquipment.HeavyEquipmentName = heavyEquipmentInput.HeavyEquipmentName
-
-	err := r.db.Create(&newHeavyEquipment).Error
-
-	if err != nil {
-		return newHeavyEquipment, err
-	}
-
-	return newHeavyEquipment, nil
-}
-
-func (r *repository) CreateSeries(brandInput RegisterSeriesInput) (series.Series, error) {
-	var newSeries series.Series
-
-	newSeries.BrandId = brandInput.BrandId
-	newSeries.HeavyEquipmentId = brandInput.HeavyEquipmentId
-	newSeries.SeriesName = brandInput.SeriesName
-
-	err := r.db.Create(&newSeries).Error
-	if err != nil {
-		return newSeries, err
-	}
-
-	return newSeries, nil
 }
 
 func (r *repository) CreateKartuKeluarga(kartukeluargaInput RegisterKartuKeluargaInput) (kartukeluarga.KartuKeluarga, error) {
@@ -311,80 +254,6 @@ func (r *repository) FindUserRoleById(id uint) (userrole.UserRole, error) {
 	return userRole, errFind
 }
 
-func (r *repository) FindBrand() ([]brand.Brand, error) {
-	var brand []brand.Brand
-
-	errFind := r.db.Find(&brand).Error
-
-	return brand, errFind
-}
-
-func (r *repository) FindBrandById(id uint) (brand.Brand, error) {
-	var brand brand.Brand
-
-	errFind := r.db.Where("id = ?", id).First(&brand).Error
-
-	return brand, errFind
-}
-
-func (r *repository) FindHeavyEquipment() ([]heavyequipment.HeavyEquipment, error) {
-	var heavyEquipment []heavyequipment.HeavyEquipment
-
-	query := `SELECT DISTINCT ON (heavy_equipment_name) * FROM heavy_equipments ORDER BY heavy_equipment_name, id`
-
-	err := r.db.Raw(query).Scan(&heavyEquipment).Error
-	return heavyEquipment, err
-}
-
-func (r *repository) FindHeavyEquipmentById(id uint) (heavyequipment.HeavyEquipment, error) {
-	var heavyEquipment heavyequipment.HeavyEquipment
-
-	errFind := r.db.Preload("Brand").Where("id = ?", id).First(&heavyEquipment).Error
-	return heavyEquipment, errFind
-}
-
-func (r *repository) FindHeavyEquipmentByBrandID(brandId uint) ([]heavyequipment.HeavyEquipment, error) {
-	var heavyEquipment []heavyequipment.HeavyEquipment
-
-	err := r.db.
-		Preload("Brand").
-		Where("brand_id = ?", brandId).
-		Find(&heavyEquipment).Error
-
-	return heavyEquipment, err
-}
-
-func (r *repository) FindSeries() ([]series.Series, error) {
-	var series []series.Series
-
-	query := `SELECT DISTINCT ON (series_name) * FROM series ORDER BY series_name, id`
-
-	err := r.db.Raw(query).Scan(&series).Error
-	return series, err
-}
-
-func (r *repository) FindSeriesById(id uint) (series.Series, error) {
-	var series series.Series
-
-	errFind := r.db.
-		Preload("Brand").
-		Preload("HeavyEquipment").
-		Where("id = ?", id).First(&series).Error
-	return series, errFind
-}
-
-func (r *repository) FindSeriesByBrandAndEquipmentdID(brandId uint, heavyequipmentId uint) ([]series.Series, error) {
-	var series []series.Series
-
-	err := r.db.
-		Preload("Brand").
-		Preload("HeavyEquipment").
-		Where("brand_id = ? AND heavy_equipment_id = ?", brandId, heavyequipmentId).
-		Find(&series).Error
-
-	return series, err
-}
-
 func (r *repository) FindDepartment() ([]department.Department, error) {
 	var department []department.Department
 
@@ -502,7 +371,7 @@ func (r *repository) FindDohKontrak(page int, sortFilter SortFilterDohKontrak) (
 	} else {
 		// Default to PTs based on empCode
 		if sortFilter.CodeEmp == "1" {
-			ptList = []string{"PT. MRP", "PT. TRIOP"}
+			ptList = []string{"PT. mjsu", "PT. TRIOP"}
 		} else if sortFilter.CodeEmp == "2" {
 			ptList = []string{"PT. MJSU", "PT. IBS"}
 		}
@@ -511,8 +380,8 @@ func (r *repository) FindDohKontrak(page int, sortFilter SortFilterDohKontrak) (
 	for _, pt := range ptList {
 		pt = strings.TrimSpace(pt)
 		switch pt {
-		case "PT. MRP":
-			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%MRP%'")
+		case "PT. mjsu":
+			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%'")
 		case "PT. TRIOP":
 			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%'")
 		case "PT. MJSU":
@@ -543,10 +412,10 @@ func (r *repository) FindDohKontrak(page int, sortFilter SortFilterDohKontrak) (
 	}
 
 	//CodeEmp
-	//1 -> MRP/TRIOP
+	//1 -> mjsu/TRIOP
 	//2 -> MJSU/IBS
 	if sortFilter.CodeEmp == "1" {
-		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%MRP%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
+		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%mjsu%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
@@ -554,7 +423,7 @@ func (r *repository) FindDohKontrak(page int, sortFilter SortFilterDohKontrak) (
 
 	if sortFilter.CodeEmp == "2" {
 		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%MJSU%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%IBS%')"
-		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
+		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
 	}
@@ -826,7 +695,7 @@ func (r *repository) FindMCUBerkala(page int, sortFilter SortFilterDohKontrak) (
 	} else {
 		// Default to PTs based on empCode
 		if sortFilter.CodeEmp == "1" {
-			ptList = []string{"PT. MRP", "PT. TRIOP"}
+			ptList = []string{"PT. mjsu", "PT. TRIOP"}
 		} else if sortFilter.CodeEmp == "2" {
 			ptList = []string{"PT. MJSU", "PT. IBS"}
 		}
@@ -835,8 +704,8 @@ func (r *repository) FindMCUBerkala(page int, sortFilter SortFilterDohKontrak) (
 	for _, pt := range ptList {
 		pt = strings.TrimSpace(pt)
 		switch pt {
-		case "PT. MRP":
-			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%MRP%'")
+		case "PT. mjsu":
+			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%'")
 		case "PT. TRIOP":
 			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%'")
 		case "PT. MJSU":
@@ -867,10 +736,10 @@ func (r *repository) FindMCUBerkala(page int, sortFilter SortFilterDohKontrak) (
 	}
 
 	//CodeEmp
-	//1 -> MRP/TRIOP
+	//1 -> mjsu/TRIOP
 	//2 -> MJSU/IBS
 	if sortFilter.CodeEmp == "1" {
-		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%MRP%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
+		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%mjsu%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
@@ -878,7 +747,7 @@ func (r *repository) FindMCUBerkala(page int, sortFilter SortFilterDohKontrak) (
 
 	if sortFilter.CodeEmp == "2" {
 		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%MJSU%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%IBS%')"
-		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
+		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
 	}

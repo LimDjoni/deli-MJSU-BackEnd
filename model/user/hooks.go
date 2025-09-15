@@ -1,7 +1,7 @@
 package user
 
 import (
-	"mrpbackend/helper"
+	"mjsubackend/helper"
 
 	"gorm.io/gorm"
 )

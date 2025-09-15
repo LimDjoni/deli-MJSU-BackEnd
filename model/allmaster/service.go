@@ -1,29 +1,23 @@
 package allmaster
 
 import (
-	"mrpbackend/model/master/brand"
-	"mrpbackend/model/master/department"
-	"mrpbackend/model/master/doh"
-	"mrpbackend/model/master/form"
-	"mrpbackend/model/master/heavyequipment"
-	"mrpbackend/model/master/history"
-	"mrpbackend/model/master/jabatan"
-	"mrpbackend/model/master/kartukeluarga"
-	"mrpbackend/model/master/ktp"
-	"mrpbackend/model/master/mcu"
-	"mrpbackend/model/master/pendidikan"
-	"mrpbackend/model/master/position"
-	"mrpbackend/model/master/role"
-	"mrpbackend/model/master/series"
-	"mrpbackend/model/master/sertifikat"
-	"mrpbackend/model/master/userrole"
+	"mjsubackend/model/master/department"
+	"mjsubackend/model/master/doh"
+	"mjsubackend/model/master/form"
+	"mjsubackend/model/master/history"
+	"mjsubackend/model/master/jabatan"
+	"mjsubackend/model/master/kartukeluarga"
+	"mjsubackend/model/master/ktp"
+	"mjsubackend/model/master/mcu"
+	"mjsubackend/model/master/pendidikan"
+	"mjsubackend/model/master/position"
+	"mjsubackend/model/master/role"
+	"mjsubackend/model/master/sertifikat"
+	"mjsubackend/model/master/userrole"
 )
 
 type Service interface {
 	CreateUserRole(userRoleInput RegisterUserRoleInput) (userrole.UserRole, error)
-	CreateBrand(brandInput RegisterBrandInput) (brand.Brand, error)
-	CreateHeavyEquipment(heavyEquipmentInput RegisterHeavyEquipmentInput) (heavyequipment.HeavyEquipment, error)
-	CreateSeries(seriesInput RegisterSeriesInput) (series.Series, error)
 	CreateKartuKeluarga(kartukeluargaInput RegisterKartuKeluargaInput) (kartukeluarga.KartuKeluarga, error)
 	CreateKTP(ktpInput RegisterKTPInput) (ktp.KTP, error)
 	CreatePendidikan(pendidikanInput RegisterPendidikanInput) (pendidikan.Pendidikan, error)
@@ -34,14 +28,6 @@ type Service interface {
 	CreateHistory(historyInput RegisterHistoryInput) (history.History, error)
 	FindUserRole() ([]userrole.UserRole, error)
 	FindUserRoleById(id uint) (userrole.UserRole, error)
-	FindBrand() ([]brand.Brand, error)
-	FindBrandById(id uint) (brand.Brand, error)
-	FindHeavyEquipment() ([]heavyequipment.HeavyEquipment, error)
-	FindHeavyEquipmentById(id uint) (heavyequipment.HeavyEquipment, error)
-	FindHeavyEquipmentByBrandID(brandId uint) ([]heavyequipment.HeavyEquipment, error)
-	FindSeries() ([]series.Series, error)
-	FindSeriesById(id uint) (series.Series, error)
-	FindSeriesByBrandAndEquipmentdID(brandId uint, heavyequipmentId uint) ([]series.Series, error)
 	FindDepartment() ([]department.Department, error)
 	FindRole() ([]role.Role, error)
 	FindPosition() ([]position.Position, error)
@@ -83,24 +69,6 @@ func (s *service) CreateUserRole(userRoleInput RegisterUserRoleInput) (userrole.
 	newUserRole, err := s.repository.CreateUserRole(userRoleInput)
 
 	return newUserRole, err
-}
-
-func (s *service) CreateBrand(brandInput RegisterBrandInput) (brand.Brand, error) {
-	newBrand, err := s.repository.CreateBrand(brandInput)
-
-	return newBrand, err
-}
-
-func (s *service) CreateSeries(seriesInput RegisterSeriesInput) (series.Series, error) {
-	newSeries, err := s.repository.CreateSeries(seriesInput)
-
-	return newSeries, err
-}
-
-func (s *service) CreateHeavyEquipment(heavyEquipmentInput RegisterHeavyEquipmentInput) (heavyequipment.HeavyEquipment, error) {
-	newHeavyEquipment, err := s.repository.CreateHeavyEquipment(heavyEquipmentInput)
-
-	return newHeavyEquipment, err
 }
 
 func (s *service) CreateKartuKeluarga(kartukeluargaInput RegisterKartuKeluargaInput) (kartukeluarga.KartuKeluarga, error) {
@@ -161,54 +129,6 @@ func (s *service) FindUserRoleById(id uint) (userrole.UserRole, error) {
 	userRole, err := s.repository.FindUserRoleById(id)
 
 	return userRole, err
-}
-
-func (s *service) FindBrand() ([]brand.Brand, error) {
-	brand, err := s.repository.FindBrand()
-
-	return brand, err
-}
-
-func (s *service) FindBrandById(id uint) (brand.Brand, error) {
-	brand, err := s.repository.FindBrandById(id)
-
-	return brand, err
-}
-
-func (s *service) FindHeavyEquipment() ([]heavyequipment.HeavyEquipment, error) {
-	heavyEquipment, err := s.repository.FindHeavyEquipment()
-
-	return heavyEquipment, err
-}
-
-func (s *service) FindHeavyEquipmentById(id uint) (heavyequipment.HeavyEquipment, error) {
-	heavyEquipment, err := s.repository.FindHeavyEquipmentById(id)
-
-	return heavyEquipment, err
-}
-
-func (s *service) FindHeavyEquipmentByBrandID(brandId uint) ([]heavyequipment.HeavyEquipment, error) {
-	heavyEquipment, err := s.repository.FindHeavyEquipmentByBrandID(brandId)
-
-	return heavyEquipment, err
-}
-
-func (s *service) FindSeries() ([]series.Series, error) {
-	series, err := s.repository.FindSeries()
-
-	return series, err
-}
-
-func (s *service) FindSeriesById(id uint) (series.Series, error) {
-	series, err := s.repository.FindSeriesById(id)
-
-	return series, err
-}
-
-func (s *service) FindSeriesByBrandAndEquipmentdID(brandId uint, heavyequipmentId uint) ([]series.Series, error) {
-	series, err := s.repository.FindSeriesByBrandAndEquipmentdID(brandId, heavyequipmentId)
-
-	return series, err
 }
 
 func (s *service) FindDepartment() ([]department.Department, error) {

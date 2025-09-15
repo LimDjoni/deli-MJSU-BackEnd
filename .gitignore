@@ -23,6 +23,6 @@ bin
 go.sum
 logging.log
 
-mrpbackend
+mjsubackend
 
 ./Book1.xlsx

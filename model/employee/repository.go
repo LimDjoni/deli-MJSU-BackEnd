@@ -2,15 +2,15 @@ package employee
 
 import (
 	"fmt"
-	"mrpbackend/model/master/apd"
-	"mrpbackend/model/master/bank"
-	"mrpbackend/model/master/bpjskesehatan"
-	"mrpbackend/model/master/bpjsketenagakerjaan"
-	"mrpbackend/model/master/kartukeluarga"
-	"mrpbackend/model/master/ktp"
-	"mrpbackend/model/master/laporan"
-	"mrpbackend/model/master/npwp"
-	"mrpbackend/model/master/pendidikan"
+	"mjsubackend/model/master/apd"
+	"mjsubackend/model/master/bank"
+	"mjsubackend/model/master/bpjskesehatan"
+	"mjsubackend/model/master/bpjsketenagakerjaan"
+	"mjsubackend/model/master/kartukeluarga"
+	"mjsubackend/model/master/ktp"
+	"mjsubackend/model/master/laporan"
+	"mjsubackend/model/master/npwp"
+	"mjsubackend/model/master/pendidikan"
 	"strings"
 	"time"
 
@@ -188,7 +188,7 @@ func (r *repository) FindEmployee(empCode uint) ([]Employee, error) {
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 	} else if empCode == 2 {
-		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
+		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 	}
 
@@ -264,10 +264,10 @@ func (r *repository) ListEmployee(page int, sortFilter SortFilterEmployee) (Pagi
 		querySort = sortFilter.Field + " " + sortFilter.Sort
 	}
 	//CodeEmp
-	//1 -> MRP/TRIOP
+	//1 -> mjsu/TRIOP
 	//2 -> MJSU/IBS
 	if sortFilter.CodeEmp == "1" {
-		queryFilter += " AND (cast(nomor_karyawan AS TEXT) ILIKE '%MRP%' OR cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
+		queryFilter += " AND (cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%' OR cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 
@@ -278,7 +278,7 @@ func (r *repository) ListEmployee(page int, sortFilter SortFilterEmployee) (Pagi
 
 	if sortFilter.CodeEmp == "2" {
 		queryFilter += " AND (cast(nomor_karyawan AS TEXT) ILIKE '%MJSU%' OR cast(nomor_karyawan AS TEXT) ILIKE '%IBS%')"
-		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
+		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 
 		if sortFilter.NomorKaryawan != "" {
@@ -655,7 +655,7 @@ func (r *repository) ListDashboard(empCode uint, dashboardSort SortFilterDashboa
 	} else {
 		// Default to PTs based on empCode
 		if empCode == 1 {
-			ptList = []string{"PT. MRP", "PT. TRIOP"}
+			ptList = []string{"PT. mjsu", "PT. TRIOP"}
 		} else if empCode == 2 {
 			ptList = []string{"PT. MJSU", "PT. IBS"}
 		}
@@ -664,8 +664,8 @@ func (r *repository) ListDashboard(empCode uint, dashboardSort SortFilterDashboa
 	for _, pt := range ptList {
 		pt = strings.TrimSpace(pt)
 		switch pt {
-		case "PT. MRP":
-			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%MRP%'")
+		case "PT. mjsu":
+			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%'")
 		case "PT. TRIOP":
 			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%'")
 		case "PT. MJSU":
@@ -687,7 +687,7 @@ func (r *repository) ListDashboard(empCode uint, dashboardSort SortFilterDashboa
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
 	} else if empCode == 2 {
-		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
+		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
 	}
@@ -878,7 +878,7 @@ func (r *repository) ListDashboardTurnover(empCode uint, dashboardSort SortFilte
 	} else {
 		// Default to PTs based on empCode
 		if empCode == 1 {
-			ptList = []string{"PT. MRP", "PT. TRIOP"}
+			ptList = []string{"PT. mjsu", "PT. TRIOP"}
 		} else if empCode == 2 {
 			ptList = []string{"PT. MJSU", "PT. IBS"}
 		}
@@ -887,8 +887,8 @@ func (r *repository) ListDashboardTurnover(empCode uint, dashboardSort SortFilte
 	for _, pt := range ptList {
 		pt = strings.TrimSpace(pt)
 		switch pt {
-		case "PT. MRP":
-			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%MRP%'")
+		case "PT. mjsu":
+			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%'")
 		case "PT. TRIOP":
 			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%'")
 		case "PT. MJSU":
@@ -909,7 +909,7 @@ func (r *repository) ListDashboardTurnover(empCode uint, dashboardSort SortFilte
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 	} else if empCode == 2 {
-		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
+		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 	}
 
@@ -1395,7 +1395,7 @@ func (r *repository) ListDashboardKontrak(empCode uint, dashboardSort SortFilter
 	} else {
 		// Default to PTs based on empCode
 		if empCode == 1 {
-			ptList = []string{"PT. MRP", "PT. TRIOP"}
+			ptList = []string{"PT. mjsu", "PT. TRIOP"}
 		} else if empCode == 2 {
 			ptList = []string{"PT. MJSU", "PT. IBS"}
 		}
@@ -1404,8 +1404,8 @@ func (r *repository) ListDashboardKontrak(empCode uint, dashboardSort SortFilter
 	for _, pt := range ptList {
 		pt = strings.TrimSpace(pt)
 		switch pt {
-		case "PT. MRP":
-			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%MRP%'")
+		case "PT. mjsu":
+			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%'")
 		case "PT. TRIOP":
 			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%'")
 		case "PT. MJSU":
@@ -1426,7 +1426,7 @@ func (r *repository) ListDashboardKontrak(empCode uint, dashboardSort SortFilter
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 	} else if empCode == 2 {
-		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
+		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 	}
 

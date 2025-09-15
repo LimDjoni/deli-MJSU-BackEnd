@@ -5,21 +5,6 @@ type RegisterUserRoleInput struct {
 	RoleId uint `json:"role_id" validate:"required"`
 }
 
-type RegisterBrandInput struct {
-	BrandName string `json:"brand_name" validate:"required"`
-}
-
-type RegisterHeavyEquipmentInput struct {
-	BrandId            uint   `json:"brand_id" validate:"required"`
-	HeavyEquipmentName string `json:"heavy_equipment_name" validate:"required"`
-}
-
-type RegisterSeriesInput struct {
-	BrandId          uint   `json:"brand_id" validate:"required"`
-	HeavyEquipmentId uint   `json:"heavy_equipment_id" validate:"required"`
-	SeriesName       string `json:"series_name" validate:"required"`
-}
-
 type RegisterKartuKeluargaInput struct {
 	NomorKartuKeluarga    string `json:"nomor_kartu_keluarga"`
 	NamaIbuKandung        string `json:"nama_ibu_kandung"`

@@ -1,8 +1,8 @@
 package departmentform
 
 import (
-	"mrpbackend/model/master/department"
-	"mrpbackend/model/master/role"
+	"mjsubackend/model/master/department"
+	"mjsubackend/model/master/role"
 
 	"gorm.io/gorm"
 )

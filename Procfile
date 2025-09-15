@@ -1,1 +1,1 @@
-web: bin/mrpbackend
+web: bin/mjsubackend

@@ -1,7 +1,7 @@
 package user
 
 import (
-	"mrpbackend/model/employee"
+	"mjsubackend/model/employee"
 
 	"gorm.io/gorm"
 )

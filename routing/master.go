@@ -1,10 +1,10 @@
 package routing
 
 import (
-	"mrpbackend/handler"
-	"mrpbackend/helper"
-	"mrpbackend/model/allmaster"
-	"mrpbackend/model/user"
+	"mjsubackend/handler"
+	"mjsubackend/helper"
+	"mjsubackend/model/allmaster"
+	"mjsubackend/model/user"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -34,9 +34,6 @@ func MasterRouting(db *gorm.DB, app fiber.Router, validate *validator.Validate) 
 		},
 	}))
 
-	masterRouting.Post("/create/brand", masterHandler.CreateBrand)
-	masterRouting.Post("/create/heavyequipment", masterHandler.CreateHeavyEquipment)
-	masterRouting.Post("/create/series", masterHandler.CreateSeries)
 	masterRouting.Post("/create/kartukeluarga", masterHandler.CreateKartuKeluarga)
 	masterRouting.Post("/create/ktp", masterHandler.CreateKTP)
 	masterRouting.Post("/create/pendidikan", masterHandler.CreatePendidikan)
@@ -46,19 +43,10 @@ func MasterRouting(db *gorm.DB, app fiber.Router, validate *validator.Validate) 
 	masterRouting.Post("/create/mcu", masterHandler.CreateMCU)
 	masterRouting.Post("/create/history", masterHandler.CreateHistory)
 
-	masterRouting.Get("/list/brand", masterHandler.GetBrand)
-	masterRouting.Get("/list/heavyequipment", masterHandler.GetHeavyEquipment)
-	masterRouting.Get("/list/series", masterHandler.GetSeries)
 	masterRouting.Get("/list/department", masterHandler.GetDepartment)
 	masterRouting.Get("/list/role", masterHandler.GetRole)
 	masterRouting.Get("/list/position", masterHandler.GetPosition)
 	masterRouting.Get("/list/expireddoh", masterHandler.GetDohKontrak)
-
-	masterRouting.Get("/detail/brand/:id", masterHandler.GetBrandById)
-	masterRouting.Get("/detail/heavyequipment/:id", masterHandler.GetHeavyEquipmentById)
-	masterRouting.Get("/detail/heavyequipment/brand/:brandId", masterHandler.GetHeavyEquipmentByBrandId)
-	masterRouting.Get("/detail/series/:id", masterHandler.GetSeriesById)
-	masterRouting.Get("/detail/series/heavyequipment/:brandId/:heavyequipmentId", masterHandler.GetSeriesByBrandAndEquipmentdID)
 
 	masterRouting.Put("/update/doh/:id", masterHandler.UpdateDOH)
 	masterRouting.Delete("/delete/doh/:id", masterHandler.DeleteDOH)

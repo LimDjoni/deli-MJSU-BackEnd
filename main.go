@@ -1,40 +1,31 @@
 package main
 
 import (
-	"mrpbackend/helper"
-	"mrpbackend/model/adjuststock"
-	"mrpbackend/model/alatberat"
-	"mrpbackend/model/backlog"
-	"mrpbackend/model/employee"
-	"mrpbackend/model/fuelin"
-	"mrpbackend/model/fuelratio"
-	"mrpbackend/model/master/apd"
-	"mrpbackend/model/master/bpjskesehatan"
-	"mrpbackend/model/master/bpjsketenagakerjaan"
-	"mrpbackend/model/master/brand"
-	"mrpbackend/model/master/department"
-	"mrpbackend/model/master/departmentform"
-	"mrpbackend/model/master/doh"
-	"mrpbackend/model/master/form"
-	heavyequiment "mrpbackend/model/master/heavyequipment"
-	"mrpbackend/model/master/history"
-	"mrpbackend/model/master/jabatan"
-	"mrpbackend/model/master/kartukeluarga"
-	"mrpbackend/model/master/ktp"
-	"mrpbackend/model/master/laporan"
-	"mrpbackend/model/master/mcu"
-	"mrpbackend/model/master/npwp"
-	"mrpbackend/model/master/pendidikan"
-	"mrpbackend/model/master/position"
-	"mrpbackend/model/master/role"
-	"mrpbackend/model/master/roleform"
-	"mrpbackend/model/master/series"
-	"mrpbackend/model/master/sertifikat"
-	"mrpbackend/model/master/userrole"
-	"mrpbackend/model/unit"
-	"mrpbackend/model/user"
-	"mrpbackend/model/userposition"
-	routing2 "mrpbackend/routing"
+	"mjsubackend/helper"
+	"mjsubackend/model/master/apd"
+	"mjsubackend/model/master/bpjskesehatan"
+	"mjsubackend/model/master/bpjsketenagakerjaan"
+	"mjsubackend/model/master/brand"
+	"mjsubackend/model/master/department"
+	"mjsubackend/model/master/departmentform"
+	"mjsubackend/model/master/doh"
+	"mjsubackend/model/master/form"
+	"mjsubackend/model/master/history"
+	"mjsubackend/model/master/jabatan"
+	"mjsubackend/model/master/kartukeluarga"
+	"mjsubackend/model/master/ktp"
+	"mjsubackend/model/master/laporan"
+	"mjsubackend/model/master/mcu"
+	"mjsubackend/model/master/npwp"
+	"mjsubackend/model/master/pendidikan"
+	"mjsubackend/model/master/position"
+	"mjsubackend/model/master/role"
+	"mjsubackend/model/master/roleform"
+	"mjsubackend/model/master/sertifikat"
+	"mjsubackend/model/master/userrole"
+	"mjsubackend/model/user"
+	"mjsubackend/model/userposition"
+	routing2 "mjsubackend/routing"
 
 	"fmt"
 
@@ -94,18 +85,8 @@ func main() {
 			&departmentform.DepartmentForm{},
 			&roleform.RoleForm{},
 			&brand.Brand{},
-			&heavyequiment.HeavyEquipment{},
-			&series.Series{},
-			&alatberat.AlatBerat{},
-			&unit.Unit{},
-			&employee.Employee{},
 			&doh.DOH{},
-			&fuelratio.FuelRatio{},
 			&userposition.UserPosition{},
-			&fuelin.FuelIn{},
-			&adjuststock.AdjustStock{},
-			&backlog.BackLog{},
-			&backlog.BackLogPart{},
 		)
 		fmt.Println(errMigrate)
 	}
@@ -160,12 +141,5 @@ func createDB(dsn string) {
 func Setup(db *gorm.DB, validate *validator.Validate, route fiber.Router) {
 	routing2.UserRouting(db, route, validate)
 	routing2.MasterRouting(db, route, validate)
-	routing2.AlatBeratRouting(db, route, validate)
-	routing2.UnitRouting(db, route, validate)
-	routing2.FuelRatioRouting(db, route, validate)
 	routing2.EmployeeRouting(db, route, validate)
-	routing2.StockFuelRouting(db, route, validate)
-	routing2.FuelInRouting(db, route, validate)
-	routing2.AdjustStockRouting(db, route, validate)
-	routing2.BackLogRouting(db, route, validate)
 }

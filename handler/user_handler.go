@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"mrpbackend/helper"
-	"mrpbackend/model/user"
-	"mrpbackend/validatorfunc"
+	"mjsubackend/helper"
+	"mjsubackend/model/user"
+	"mjsubackend/validatorfunc"
 	"reflect"
 
 	"github.com/go-playground/validator/v10"

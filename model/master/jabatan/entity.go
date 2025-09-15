@@ -1,7 +1,7 @@
 package jabatan
 
 import (
-	"mrpbackend/model/master/position"
+	"mjsubackend/model/master/position"
 
 	"gorm.io/gorm"
 )

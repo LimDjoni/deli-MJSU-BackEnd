@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"mrpbackend/model/employee"
-	"mrpbackend/model/user"
-	"mrpbackend/validatorfunc"
+	"mjsubackend/model/employee"
+	"mjsubackend/model/user"
+	"mjsubackend/validatorfunc"
 	"reflect"
 	"strconv"
 
