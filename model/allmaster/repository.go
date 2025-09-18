@@ -371,7 +371,7 @@ func (r *repository) FindDohKontrak(page int, sortFilter SortFilterDohKontrak) (
 	} else {
 		// Default to PTs based on empCode
 		if sortFilter.CodeEmp == "1" {
-			ptList = []string{"PT. mjsu", "PT. TRIOP"}
+			ptList = []string{"PT. MRP", "PT. TRIOP"}
 		} else if sortFilter.CodeEmp == "2" {
 			ptList = []string{"PT. MJSU", "PT. IBS"}
 		}
@@ -380,8 +380,8 @@ func (r *repository) FindDohKontrak(page int, sortFilter SortFilterDohKontrak) (
 	for _, pt := range ptList {
 		pt = strings.TrimSpace(pt)
 		switch pt {
-		case "PT. mjsu":
-			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%'")
+		case "PT. MRP":
+			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%MRP%'")
 		case "PT. TRIOP":
 			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%'")
 		case "PT. MJSU":
@@ -412,10 +412,10 @@ func (r *repository) FindDohKontrak(page int, sortFilter SortFilterDohKontrak) (
 	}
 
 	//CodeEmp
-	//1 -> mjsu/TRIOP
+	//1 -> MRP/TRIOP
 	//2 -> MJSU/IBS
 	if sortFilter.CodeEmp == "1" {
-		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%mjsu%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
+		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%MRP%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
@@ -423,7 +423,7 @@ func (r *repository) FindDohKontrak(page int, sortFilter SortFilterDohKontrak) (
 
 	if sortFilter.CodeEmp == "2" {
 		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%MJSU%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%IBS%')"
-		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
+		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
 	}
@@ -695,7 +695,7 @@ func (r *repository) FindMCUBerkala(page int, sortFilter SortFilterDohKontrak) (
 	} else {
 		// Default to PTs based on empCode
 		if sortFilter.CodeEmp == "1" {
-			ptList = []string{"PT. mjsu", "PT. TRIOP"}
+			ptList = []string{"PT. MRP", "PT. TRIOP"}
 		} else if sortFilter.CodeEmp == "2" {
 			ptList = []string{"PT. MJSU", "PT. IBS"}
 		}
@@ -704,8 +704,8 @@ func (r *repository) FindMCUBerkala(page int, sortFilter SortFilterDohKontrak) (
 	for _, pt := range ptList {
 		pt = strings.TrimSpace(pt)
 		switch pt {
-		case "PT. mjsu":
-			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%'")
+		case "PT. MRP":
+			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%MRP%'")
 		case "PT. TRIOP":
 			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%'")
 		case "PT. MJSU":
@@ -736,10 +736,10 @@ func (r *repository) FindMCUBerkala(page int, sortFilter SortFilterDohKontrak) (
 	}
 
 	//CodeEmp
-	//1 -> mjsu/TRIOP
+	//1 -> MRP/TRIOP
 	//2 -> MJSU/IBS
 	if sortFilter.CodeEmp == "1" {
-		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%mjsu%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
+		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%MRP%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
@@ -747,7 +747,7 @@ func (r *repository) FindMCUBerkala(page int, sortFilter SortFilterDohKontrak) (
 
 	if sortFilter.CodeEmp == "2" {
 		queryFilter += " AND (cast(e.nomor_karyawan AS TEXT) ILIKE '%MJSU%' OR cast(e.nomor_karyawan AS TEXT) ILIKE '%IBS%')"
-		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
+		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
 		queryFilter += " AND cast(e.nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
 	}

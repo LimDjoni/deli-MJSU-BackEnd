@@ -2,6 +2,9 @@ package main
 
 import (
 	"mjsubackend/helper"
+	"mjsubackend/model/asset"
+	barangkeluar "mjsubackend/model/barang-keluar"
+	barangmasuk "mjsubackend/model/barang-masuk"
 	"mjsubackend/model/master/apd"
 	"mjsubackend/model/master/bpjskesehatan"
 	"mjsubackend/model/master/bpjsketenagakerjaan"
@@ -87,6 +90,9 @@ func main() {
 			&brand.Brand{},
 			&doh.DOH{},
 			&userposition.UserPosition{},
+			&asset.Asset{},
+			&barangmasuk.BarangMasuk{},
+			&barangkeluar.BarangKeluar{},
 		)
 		fmt.Println(errMigrate)
 	}
@@ -142,4 +148,7 @@ func Setup(db *gorm.DB, validate *validator.Validate, route fiber.Router) {
 	routing2.UserRouting(db, route, validate)
 	routing2.MasterRouting(db, route, validate)
 	routing2.EmployeeRouting(db, route, validate)
+	routing2.AssetRouting(db, route, validate)
+	routing2.BarangMasukRouting(db, route, validate)
+	routing2.BarangKeluarRouting(db, route, validate)
 }

@@ -1,7 +1,6 @@
 package employee
 
 import (
-	"fmt"
 	"mjsubackend/model/master/apd"
 	"mjsubackend/model/master/bank"
 	"mjsubackend/model/master/bpjskesehatan"
@@ -11,6 +10,7 @@ import (
 	"mjsubackend/model/master/laporan"
 	"mjsubackend/model/master/npwp"
 	"mjsubackend/model/master/pendidikan"
+	"fmt"
 	"strings"
 	"time"
 
@@ -188,7 +188,7 @@ func (r *repository) FindEmployee(empCode uint) ([]Employee, error) {
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 	} else if empCode == 2 {
-		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
+		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 	}
 
@@ -220,25 +220,29 @@ func (r *repository) FindEmployee(empCode uint) ([]Employee, error) {
 func (r *repository) FindEmployeeById(id uint) (Employee, error) {
 	var employees Employee
 
+	orderByID := func(db *gorm.DB) *gorm.DB {
+		return db.Order("id ASC")
+	}
+
 	errFind := r.db.
-		Preload("Department").
-		Preload("Role").
-		Preload("Position").
-		Preload("KartuKeluarga").
-		Preload("KTP").
-		Preload("Pendidikan").
-		Preload("Laporan").
-		Preload("APD").
-		Preload("NPWP").
-		Preload("Bank").
-		Preload("BPJSKesehatan").
-		Preload("BPJSKetenagakerjaan").
-		Preload("DOH").
-		Preload("Jabatan").
-		Preload("Jabatan.Position").
-		Preload("Sertifikat").
-		Preload("MCU").
-		Preload("History").
+		Preload("Department", orderByID).
+		Preload("Role", orderByID).
+		Preload("Position", orderByID).
+		Preload("KartuKeluarga", orderByID).
+		Preload("KTP", orderByID).
+		Preload("Pendidikan", orderByID).
+		Preload("Laporan", orderByID).
+		Preload("APD", orderByID).
+		Preload("NPWP", orderByID).
+		Preload("Bank", orderByID).
+		Preload("BPJSKesehatan", orderByID).
+		Preload("BPJSKetenagakerjaan", orderByID).
+		Preload("DOH", orderByID).
+		Preload("Jabatan", orderByID).
+		Preload("Jabatan.Position", orderByID).
+		Preload("Sertifikat", orderByID).
+		Preload("MCU", orderByID).
+		Preload("History", orderByID).
 		Where("id = ?", id).First(&employees).Error
 	return employees, errFind
 }
@@ -264,10 +268,10 @@ func (r *repository) ListEmployee(page int, sortFilter SortFilterEmployee) (Pagi
 		querySort = sortFilter.Field + " " + sortFilter.Sort
 	}
 	//CodeEmp
-	//1 -> mjsu/TRIOP
+	//1 -> MRP/TRIOP
 	//2 -> MJSU/IBS
 	if sortFilter.CodeEmp == "1" {
-		queryFilter += " AND (cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%' OR cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
+		queryFilter += " AND (cast(nomor_karyawan AS TEXT) ILIKE '%MRP%' OR cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%')"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 
@@ -278,7 +282,7 @@ func (r *repository) ListEmployee(page int, sortFilter SortFilterEmployee) (Pagi
 
 	if sortFilter.CodeEmp == "2" {
 		queryFilter += " AND (cast(nomor_karyawan AS TEXT) ILIKE '%MJSU%' OR cast(nomor_karyawan AS TEXT) ILIKE '%IBS%')"
-		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
+		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 
 		if sortFilter.NomorKaryawan != "" {
@@ -655,7 +659,7 @@ func (r *repository) ListDashboard(empCode uint, dashboardSort SortFilterDashboa
 	} else {
 		// Default to PTs based on empCode
 		if empCode == 1 {
-			ptList = []string{"PT. mjsu", "PT. TRIOP"}
+			ptList = []string{"PT. MRP", "PT. TRIOP"}
 		} else if empCode == 2 {
 			ptList = []string{"PT. MJSU", "PT. IBS"}
 		}
@@ -664,8 +668,8 @@ func (r *repository) ListDashboard(empCode uint, dashboardSort SortFilterDashboa
 	for _, pt := range ptList {
 		pt = strings.TrimSpace(pt)
 		switch pt {
-		case "PT. mjsu":
-			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%'")
+		case "PT. MRP":
+			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%MRP%'")
 		case "PT. TRIOP":
 			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%'")
 		case "PT. MJSU":
@@ -687,7 +691,7 @@ func (r *repository) ListDashboard(empCode uint, dashboardSort SortFilterDashboa
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
 	} else if empCode == 2 {
-		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
+		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 		queryFilter += " AND cast(status AS TEXT) ILIKE 'AKTIF'"
 	}
@@ -878,7 +882,7 @@ func (r *repository) ListDashboardTurnover(empCode uint, dashboardSort SortFilte
 	} else {
 		// Default to PTs based on empCode
 		if empCode == 1 {
-			ptList = []string{"PT. mjsu", "PT. TRIOP"}
+			ptList = []string{"PT. MRP", "PT. TRIOP"}
 		} else if empCode == 2 {
 			ptList = []string{"PT. MJSU", "PT. IBS"}
 		}
@@ -887,8 +891,8 @@ func (r *repository) ListDashboardTurnover(empCode uint, dashboardSort SortFilte
 	for _, pt := range ptList {
 		pt = strings.TrimSpace(pt)
 		switch pt {
-		case "PT. mjsu":
-			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%'")
+		case "PT. MRP":
+			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%MRP%'")
 		case "PT. TRIOP":
 			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%'")
 		case "PT. MJSU":
@@ -909,7 +913,7 @@ func (r *repository) ListDashboardTurnover(empCode uint, dashboardSort SortFilte
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 	} else if empCode == 2 {
-		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
+		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 	}
 
@@ -1395,7 +1399,7 @@ func (r *repository) ListDashboardKontrak(empCode uint, dashboardSort SortFilter
 	} else {
 		// Default to PTs based on empCode
 		if empCode == 1 {
-			ptList = []string{"PT. mjsu", "PT. TRIOP"}
+			ptList = []string{"PT. MRP", "PT. TRIOP"}
 		} else if empCode == 2 {
 			ptList = []string{"PT. MJSU", "PT. IBS"}
 		}
@@ -1404,8 +1408,8 @@ func (r *repository) ListDashboardKontrak(empCode uint, dashboardSort SortFilter
 	for _, pt := range ptList {
 		pt = strings.TrimSpace(pt)
 		switch pt {
-		case "PT. mjsu":
-			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%mjsu%'")
+		case "PT. MRP":
+			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%MRP%'")
 		case "PT. TRIOP":
 			ptConditions = append(ptConditions, "cast(nomor_karyawan AS TEXT) ILIKE '%TRIOP%'")
 		case "PT. MJSU":
@@ -1426,7 +1430,7 @@ func (r *repository) ListDashboardKontrak(empCode uint, dashboardSort SortFilter
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MJSU%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%IBS%'"
 	} else if empCode == 2 {
-		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%mjsu%'"
+		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%MRP%'"
 		queryFilter += " AND cast(nomor_karyawan AS TEXT) NOT ILIKE '%TRIOP%'"
 	}
 
